@@ -1,5 +1,8 @@
+// import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/painting/text_style.dart';
+
 
 class CreateDialog extends StatefulWidget {
   @override
@@ -28,232 +31,233 @@ class _MyAlertDialogState extends State<CreateDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      insetPadding: EdgeInsets.all(20),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17.0)),
-      title: Text('수업 추가', style: TextStyle(fontWeight : FontWeight.bold)),
-      content:
-      Container(
-        width: 500,
-        padding: EdgeInsets.only(left: 20, right: 20),
-        child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  decoration: InputDecoration(labelText: '수업명'),
-                  style: TextStyle(fontWeight : FontWeight.bold),
-                  keyboardType: TextInputType.text,
-                  controller: subjectsController,
-                ),
-                TextField(
-                  decoration: InputDecoration(labelText: '교수명'),
-                  style: TextStyle(fontWeight : FontWeight.bold),
-                  keyboardType: TextInputType.text,
-                  controller: professorController,
-                ),
-                Row(
-                  children: [
-                    Text("시간", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black54)),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                          child: DropdownButton<String>(
-                            value: _selectedDateValue,
-                            items: _dateList.map((days){
+        insetPadding: EdgeInsets.all(20),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17.0)),
+        title: Text('수업 추가', style: TextStyle(fontWeight : FontWeight.bold)),
+        content:
+        Container(
+          width: 500,
+          padding: EdgeInsets.only(left: 20, right: 20),
+          child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    decoration: InputDecoration(labelText: '수업명'),
+                    style: TextStyle(fontWeight : FontWeight.bold),
+                    keyboardType: TextInputType.text,
+                    controller: subjectsController,
+                  ),
+                  TextField(
+                    decoration: InputDecoration(labelText: '교수명'),
+                    style: TextStyle(fontWeight : FontWeight.bold),
+                    keyboardType: TextInputType.text,
+                    controller: professorController,
+                  ),
+                  Row(
+                    children: [
+                      Text("시간", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black54)),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                            child: DropdownButton<String>(
+                              value: _selectedDateValue,
+                              items: _dateList.map((days){
+                                return DropdownMenuItem(
+                                  value: days,
+                                  child: Text(days),
+                                );
+                              }).toList(),
+                              onChanged: (dynamic days){
+                                setState((){
+                                  _selectedDateValue = days;
+                                });
+                              },
+                            )
+                        ),
+                      ),
+                      Container(
+                          child: DropdownButton<int>(
+                            value: _selectedValue1,
+                            items: _startList.map((startclass){
                               return DropdownMenuItem(
-                                value: days,
-                                child: Text(days),
+                                value: startclass,
+                                child: Text('$startclass교시'),
                               );
                             }).toList(),
-                            onChanged: (dynamic days){
+                            onChanged: (dynamic startclass){
                               setState((){
-                                _selectedDateValue = days;
+                                _selectedValue1 = startclass;
                               });
                             },
                           )
                       ),
-                    ),
-                    Container(
-                        child: DropdownButton<int>(
-                          value: _selectedValue1,
-                          items: _startList.map((startclass){
-                            return DropdownMenuItem(
-                              value: startclass,
-                              child: Text('$startclass교시'),
-                            );
-                          }).toList(),
-                          onChanged: (dynamic startclass){
-                            setState((){
-                              _selectedValue1 = startclass;
-                            });
-                          },
-                        )
-                    ),
-                    Text(" 부터 "),
-                    Container(
-                        child: DropdownButton<int>(
-                          value: _selectedValue2,
-                          items: _endList.map((endclass){
-                            return DropdownMenuItem(
-                              value: endclass,
-                              child: Text('$endclass교시'),
-                            );
-                          }).toList(),
-                          onChanged: (dynamic endclass){
-                            setState((){
-                              _selectedValue2 = endclass;
-                            });
-                          },
-                        )
-                    ),
+                      Text(" 부터 "),
+                      Container(
+                          child: DropdownButton<int>(
+                            value: _selectedValue2,
+                            items: _endList.map((endclass){
+                              return DropdownMenuItem(
+                                value: endclass,
+                                child: Text('$endclass교시'),
+                              );
+                            }).toList(),
+                            onChanged: (dynamic endclass){
+                              setState((){
+                                _selectedValue2 = endclass;
+                              });
+                            },
+                          )
+                      ),
 
-                  ],
-                ),
-                TextField(
-                  decoration: InputDecoration(labelText: '장소'),
-                  style: TextStyle(fontWeight : FontWeight.bold),
-                  keyboardType: TextInputType.text,
-                  controller: placeController,
-                ),
-                Row(
-                  children:[
-                    Text('색상', style: TextStyle(fontWeight : FontWeight.bold, color: Colors.black54)),
-                  ],
-                ),
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Radio(
-                          value: 1,
-                          groupValue: id,
-                          fillColor : MaterialStateColor.resolveWith((states) => Colors.orangeAccent),
-                          onChanged: (val){
-                            setState((){
-                              _colorSelect = 'RED';
-                              id = 1;
-                            });
-                          }),
-                      Radio(
-                          value: 2,
-                          groupValue: id,
-                          fillColor : MaterialStateColor.resolveWith((states) => Colors.lime),
-                          onChanged: (val){
-                            setState((){
-                              _colorSelect = 'BLUE';
-                              id = 2;
-                            });
-                          }),
-                      Radio(
-                          value: 3,
-                          groupValue: id,
-                          fillColor : MaterialStateColor.resolveWith((states) => Colors.blueGrey),
-                          onChanged: (val){
-                            setState((){
-                              _colorSelect = 'GREEN';
-                              id = 3;
-                            });
-                          }),
                     ],
                   ),
-                ),
-                Column(
-                  children: [
-                    Row(
+                  TextField(
+                    decoration: InputDecoration(labelText: '장소'),
+                    style: TextStyle(fontWeight : FontWeight.bold),
+                    keyboardType: TextInputType.text,
+                    controller: placeController,
+                  ),
+                  Row(
+                    children:[
+                      Text('색상', style: TextStyle(fontWeight : FontWeight.bold, color: Colors.black54)),
+                    ],
+                  ),
+                  Center(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Radio(
-                            value: 4,
+                            value: 1,
                             groupValue: id,
-                            fillColor : MaterialStateColor.resolveWith((states) => Colors.indigo),
+                            fillColor : MaterialStateColor.resolveWith((states) => Colors.orangeAccent),
                             onChanged: (val){
                               setState((){
-                                _colorSelect = 'YELLOW';
-                                id = 4;
+                                _colorSelect = 'RED';
+                                id = 1;
                               });
                             }),
                         Radio(
-                            value: 5,
+                            value: 2,
                             groupValue: id,
-                            fillColor : MaterialStateColor.resolveWith((states) => Colors.brown),
+                            fillColor : MaterialStateColor.resolveWith((states) => Colors.lime),
                             onChanged: (val){
                               setState((){
-                                _colorSelect = 'LIME';
-                                id = 5;
+                                _colorSelect = 'BLUE';
+                                id = 2;
                               });
                             }),
                         Radio(
-                            value: 6,
+                            value: 3,
                             groupValue: id,
-                            fillColor: MaterialStateColor.resolveWith((states) => Colors.purpleAccent),
+                            fillColor : MaterialStateColor.resolveWith((states) => Colors.blueGrey),
                             onChanged: (val){
                               setState((){
-                                _colorSelect = 'GREY';
-                                id = 6;
+                                _colorSelect = 'GREEN';
+                                id = 3;
                               });
                             }),
                       ],
-                    )
-                  ],
-                ),
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Radio(
-                            value: 7,
-                            groupValue: id,
-                            fillColor : MaterialStateColor.resolveWith((states) => Colors.lightBlueAccent),
-                            onChanged: (val){
-                              setState((){
-                                _colorSelect = 'GREY1';
-                                id = 7;
-                              });
-                            }),
-                        Radio(
-                            value: 8,
-                            groupValue: id,
-                            fillColor : MaterialStateColor.resolveWith((states) => Colors.cyan),
-                            onChanged: (val){
-                              setState((){
-                                _colorSelect = 'GREY2';
-                                id = 8;
-                              });
-                            }),
-                        Radio(
-                            value: 9,
-                            groupValue: id,
-                            fillColor : MaterialStateColor.resolveWith((states) => Colors.lightGreenAccent),
-                            onChanged: (val){
-                              setState((){
-                                _colorSelect = 'GREY3';
-                                id = 9;
-                              });
-                            }),
-                      ],
-                    )
-                  ],
-                )
-              ],
-            )
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Radio(
+                              value: 4,
+                              groupValue: id,
+                              fillColor : MaterialStateColor.resolveWith((states) => Colors.indigo),
+                              onChanged: (val){
+                                setState((){
+                                  _colorSelect = 'YELLOW';
+                                  id = 4;
+                                });
+                              }),
+                          Radio(
+                              value: 5,
+                              groupValue: id,
+                              fillColor : MaterialStateColor.resolveWith((states) => Colors.brown),
+                              onChanged: (val){
+                                setState((){
+                                  _colorSelect = 'LIME';
+                                  id = 5;
+                                });
+                              }),
+                          Radio(
+                              value: 6,
+                              groupValue: id,
+                              fillColor: MaterialStateColor.resolveWith((states) => Colors.purpleAccent),
+                              onChanged: (val){
+                                setState((){
+                                  _colorSelect = 'GREY';
+                                  id = 6;
+                                });
+                              }),
+                        ],
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Radio(
+                              value: 7,
+                              groupValue: id,
+                              fillColor : MaterialStateColor.resolveWith((states) => Colors.lightBlueAccent),
+                              onChanged: (val){
+                                setState((){
+                                  _colorSelect = 'GREY1';
+                                  id = 7;
+                                });
+                              }),
+                          Radio(
+                              value: 8,
+                              groupValue: id,
+                              fillColor : MaterialStateColor.resolveWith((states) => Colors.cyan),
+                              onChanged: (val){
+                                setState((){
+                                  _colorSelect = 'GREY2';
+                                  id = 8;
+                                });
+                              }),
+                          Radio(
+                              value: 9,
+                              groupValue: id,
+                              fillColor : MaterialStateColor.resolveWith((states) => Colors.lightGreenAccent),
+                              onChanged: (val){
+                                setState((){
+                                  _colorSelect = 'GREY3';
+                                  id = 9;
+                                });
+                              }),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+              )
+          ),
         ),
-      ),
 
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            //myLecture(context, subjectsController.text, professorController.text, "7", 1, 3, placeController.text, 0xffb74093);
-
-            Navigator.of(context).pop();
-          },
-          child: Text('확인', style: TextStyle(color: Colors.indigo, fontWeight : FontWeight.bold)),
-        ),
-      ],
+        actions: <Widget>[
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                return setState(() {
+                  //myLecture(context, subjectsController.text, professorController.text, "6", 1, 3, placeController.text, 0xffb74093);
+                });
+              },
+              child: Text('확인', style: TextStyle(color: Colors.indigo, fontWeight : FontWeight.bold))
+          )
+        ]
     );
   }
 }
